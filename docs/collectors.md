@@ -67,6 +67,9 @@ shared PID registry. No packet contents, no DNS lookups, no reverse resolution.
 
 - Sockets that live entirely between two samples are missed.
 - Endpoints without a PID cannot be attributed and are skipped.
+- On macOS, socket owners are hidden from unprivileged processes: the sockets are visible
+  but not attributable. CmdScope reports the collector as `degraded` with
+  `unattributed_sockets` instead of silently reporting nothing.
 - Ownership of sockets owned by other users may require elevation on Linux and macOS;
   CmdScope never elevates by itself and reports the degradation instead.
 - A connection and its socket share one signature, so a socket that changes state is

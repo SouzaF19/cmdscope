@@ -73,6 +73,33 @@ def test_network_collector_ignores_unknown_pids(
     assert not [event for event in events if event.kind == EventKind.NETWORK_CONNECTION]
 
 
+def test_network_collector_reports_unattributed_sockets(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    anonymous = SimpleNamespace(
+        pid=None,
+        family=socket.AF_INET,
+        type=socket.SOCK_STREAM,
+        laddr=("127.0.0.1", 5000),
+        raddr=(),
+        status="NONE",
+    )
+    monkeypatch.setattr(
+        "cmdscope.collectors.network.psutil.net_connections",
+        lambda kind="inet": [anonymous],
+    )
+    events: list = []
+    registry = ProcessRegistry()
+    registry.add(4242, "curl")
+    collector = NetworkCollector(poll_interval=0.02)
+    collector.start(make_context(tmp_path, events.append, registry=registry))
+    status = collector.stop()
+    assert status.state == CollectorState.DEGRADED
+    assert status.message is not None
+    assert status.details["unattributed_sockets"] == 1
+    assert not [event for event in events if event.kind == EventKind.NETWORK_CONNECTION]
+
+
 def test_network_collector_reports_access_denied(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:

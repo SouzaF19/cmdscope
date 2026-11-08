@@ -128,10 +128,11 @@ def is_elevated() -> bool:
         try:
             import ctypes
 
-            return bool(ctypes.windll.shell32.IsUserAnAdmin())
+            windll = ctypes.windll
+            return bool(windll.shell32.IsUserAnAdmin())
         except (AttributeError, OSError):
             return False
-    try:
-        return os.geteuid() == 0  # type: ignore[attr-defined]
-    except AttributeError:  # pragma: no cover - non-POSIX non-Windows host
+    geteuid = getattr(os, "geteuid", None)
+    if geteuid is None:  # pragma: no cover - non-POSIX non-Windows host
         return False
+    return geteuid() == 0

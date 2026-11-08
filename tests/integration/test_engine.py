@@ -95,7 +95,17 @@ def test_session_records_files_processes_and_network(tmp_path: Path) -> None:
     assert EventKind.FILESYSTEM_MODIFIED in kinds
     assert EventKind.FILESYSTEM_DELETED in kinds
     assert EventKind.PROCESS_STARTED in kinds
-    assert EventKind.NETWORK_CONNECTION in kinds
+
+    network_collector = next(
+        collector for collector in session.collectors if collector.name == "network"
+    )
+    if EventKind.NETWORK_CONNECTION in kinds:
+        assert network_collector.state in (CollectorState.OK, CollectorState.DEGRADED)
+    else:
+        # Platforms such as macOS hide socket owners from unprivileged processes.
+        # CmdScope must state that limitation instead of silently reporting nothing.
+        assert network_collector.state == CollectorState.DEGRADED
+        assert network_collector.message
 
     added = session.env_diff.get("added")
     assert isinstance(added, dict)

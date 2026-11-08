@@ -202,6 +202,9 @@ blind spots of each collector.
   anywhere else on the system are invisible.
 - **Sampling.** Processes and sockets are discovered by polling. A child process or a
   connection that lives entirely between two polls can be missed.
+- **Network attribution needs privileges on macOS.** Unprivileged processes cannot see
+  socket owners there; CmdScope marks the network collector as `degraded` instead of
+  pretending it observed nothing.
 - **No runtime environment visibility.** Only the initial environment diff handed to the
   child is recorded. Mutating `environ` inside a running process cannot be observed.
 - **No attribution of causes.** The report says what was observed, not which process caused

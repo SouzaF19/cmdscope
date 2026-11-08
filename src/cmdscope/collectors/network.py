@@ -67,6 +67,7 @@ class NetworkCollector:
         self._thread: threading.Thread | None = None
         self._seen: set[tuple[Any, ...]] = set()
         self._access_denied = False
+        self._unattributed: set[tuple[Any, ...]] = set()
         self._error: str | None = None
         self._started_at: datetime | None = None
         self._connections = 0
@@ -106,12 +107,22 @@ class NetworkCollector:
         registry = self._registry.snapshot()
         for connection in connections:
             pid = getattr(connection, "pid", None)
-            if pid is None or pid not in registry:
-                continue
             local = getattr(connection, "laddr", None)
             remote = getattr(connection, "raddr", None)
             family = getattr(connection, "family", None)
             protocol = getattr(connection, "type", None)
+            if pid is None:
+                self._unattributed.add(
+                    (
+                        family,
+                        protocol,
+                        tuple(local) if local else None,
+                        tuple(remote) if remote else None,
+                    )
+                )
+                continue
+            if pid not in registry:
+                continue
             key = (
                 pid,
                 family,
@@ -163,6 +174,12 @@ class NetworkCollector:
         elif self._error:
             state = CollectorState.FAILED
             messages.append(self._error)
+        elif not self._connections and self._unattributed:
+            state = CollectorState.DEGRADED
+            messages.append(
+                "socket owners are not visible on this platform; "
+                "network endpoints could not be attributed"
+            )
 
         return CollectorStatus(
             name=self.name,
@@ -170,6 +187,7 @@ class NetworkCollector:
             message="; ".join(messages) if messages else None,
             details={
                 "connections_observed": self._connections,
+                "unattributed_sockets": len(self._unattributed),
                 "access_denied": self._access_denied,
                 "poll_interval": self._poll_interval,
             },
