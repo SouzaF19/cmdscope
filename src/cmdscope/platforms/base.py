@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import importlib
 import os
 import shutil
 import subprocess
@@ -126,9 +127,10 @@ def is_elevated() -> bool:
 
     if os.name == "nt":
         try:
-            import ctypes
-
-            windll = getattr(ctypes, "windll")
+            ctypes = importlib.import_module("ctypes")
+            windll = getattr(ctypes, "windll", None)
+            if windll is None:  # pragma: no cover - non-Windows typeshed
+                return False
             return bool(windll.shell32.IsUserAnAdmin())
         except (AttributeError, OSError):
             return False
