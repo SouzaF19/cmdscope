@@ -1,0 +1,58 @@
+name: Bug report
+description: Report a problem with CmdScope
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. CmdScope never uploads data, so everything below
+        stays in this issue.
+  - type: input
+    id: version
+    attributes:
+      label: CmdScope version
+      description: Output of `cmdscope --version`
+      placeholder: cmdscope 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: Windows 11 / Ubuntu 24.04 / macOS 15
+    validations:
+      required: true
+  - type: input
+    id: python
+    attributes:
+      label: Python version
+      placeholder: 3.13.1
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: What did you run?
+      description: The exact CmdScope command, with secrets removed.
+      placeholder: cmdscope run -- npm install
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed behaviour
+      description: Include the report output if it is safe to share.
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: Output of `cmdscope doctor`
+      description: This contains no personal data and helps a lot.
+      render: shell
