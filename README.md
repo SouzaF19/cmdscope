@@ -295,9 +295,9 @@ Run `cmdscope config --init` to write a commented template. Full reference:
 
 ## Contributing
 
-Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) and
-[AGENTS.md](AGENTS.md) first; the latter contains the permanent engineering rules for this
-repository.
+Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) first; it documents
+the engineering rules, quality gates, and the workflow we use to keep CmdScope
+dependable.
 
 ```console
 $ python -m pip install -e ".[dev]"

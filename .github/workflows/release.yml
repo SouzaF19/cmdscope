@@ -44,11 +44,17 @@ jobs:
       name: pypi
       url: https://pypi.org/p/cmdscope
     permissions:
-      id-token: write
+      contents: read
     steps:
       - uses: actions/download-artifact@v4
         with:
           name: distributions
           path: dist
-      - name: Publish with trusted publishing
+      - name: Publish to PyPI with an API token
         uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          # The token is a PyPI API token with scope "Entire project" for cmdscope,
+          # stored as the repository secret PYPI_API_TOKEN.
+          # Repository settings -> Secrets and variables -> Actions -> New secret.
+          # Name it exactly PYPI_API_TOKEN and paste the "pypi-..." token as the value.
+          password: ${{ secrets.PYPI_API_TOKEN }}

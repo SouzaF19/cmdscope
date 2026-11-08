@@ -33,7 +33,7 @@ Initial public release.
 - TOML configuration with per-collector settings, watch roots, ignore patterns, storage
   limits, and report options.
 - Documentation: README, architecture guide, collector guide, configuration reference,
-  privacy model, `AGENTS.md` with the permanent engineering rules.
+  privacy model, contribution guide with the engineering rules.
 
 ### Known limitations
 

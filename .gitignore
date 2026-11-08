@@ -27,3 +27,6 @@ cmdscope.toml
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Regras locais do mantenedor (nao versionadas)
+AGENTS.md

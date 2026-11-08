@@ -3,8 +3,8 @@
 Thanks for considering a contribution. CmdScope is young, so there is room to shape the
 design — but the project has non-negotiable rules about honesty, privacy, and safety.
 
-Read [AGENTS.md](AGENTS.md) first: it contains the permanent engineering rules for this
-repository (architecture invariants, quality gates, privacy rules).
+Read the "Ground rules" and "Architecture invariants" sections of this guide first: they
+contain the engineering rules for this repository and are enforced in review.
 
 ## Development setup
 
@@ -79,3 +79,19 @@ history might not.
 ## License
 
 Contributions are accepted under the MIT license.
+
+## Releasing (maintainers)
+
+1. Merge the release PR and confirm that CI is green on `main`.
+2. Update `CHANGELOG.md` (move "Unreleased" entries into a dated version section).
+3. Bump `version` in `pyproject.toml`.
+4. Tag and push: `git tag v0.1.0 && git push origin v0.1.0`.
+5. The `release` workflow builds the wheel and sdist, checks them, smoke-installs the
+   wheel, and publishes both to PyPI.
+
+Publishing uses the PyPI API token stored as the repository secret `PYPI_API_TOKEN`
+(`Repository settings → Secrets and variables → Actions`). Rotate the token after every
+release. To switch to trusted publishing instead, remove the `password:` input and add
+`id-token: write` to the publish job permissions after configuring the publisher on
+PyPI. Publishing is never triggered from a pull request.
+
