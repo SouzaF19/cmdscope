@@ -87,6 +87,7 @@ The JSON report always contains every stored event unless an explicit `--limit` 
 | `--ignore GLOB` | Add an ignore pattern (repeatable). Extends the configured patterns. |
 | `--env KEY=VALUE` | Set an environment variable for the child (repeatable). |
 | `--no-filesystem`, `--no-processes`, `--no-network` | Disable a collector for this run. |
+| `--no-native-events` | Force filesystem polling instead of native OS events. |
 | `--include-environment` | Include the sanitized environment diff in the report. |
 | `--limit N`, `--all` | Control how many events a report shows. |
 | `--no-color` | Disable ANSI colors. |

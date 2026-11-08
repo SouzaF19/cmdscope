@@ -127,6 +127,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="disable network observation",
     )
     run_parser.add_argument(
+        "--no-native-events",
+        action="store_true",
+        help="force filesystem polling instead of native OS events",
+    )
+    run_parser.add_argument(
         "--no-report",
         action="store_true",
         help="do not print a report after the command",
@@ -353,7 +358,7 @@ def _run(
         max_files=config.filesystem.max_files,
         max_events=config.storage.max_events,
         max_sessions=config.storage.max_sessions,
-        use_native_events=config.filesystem.native_events,
+        use_native_events=config.filesystem.native_events and not args.no_native_events,
         capture_environment=config.privacy.capture_environment,
     )
 

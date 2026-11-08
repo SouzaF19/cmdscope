@@ -8,6 +8,19 @@ All notable changes to this project are documented in this file. The format foll
 
 Nothing yet.
 
+## [0.1.1] - 2026-11-08
+
+### Added
+
+- `cmdscope run --no-native-events` to force filesystem observation by polling instead
+  of native OS events. Useful on network filesystems (CIFS/NFS) where native events are
+  unreliable. Documented in the README and the configuration reference.
+
+### Changed
+
+- Publishing to PyPI now uses a project-scoped API token stored as the repository
+  secret `PYPI_API_TOKEN`, instead of an account-wide token.
+
 ## [0.1.0] - 2026-11-08
 
 Initial public release.
@@ -43,5 +56,6 @@ Initial public release.
 - Windows is the only platform validated manually in this release; Linux and macOS are
   exercised by CI.
 
-[Unreleased]: https://github.com/SouzaF19/cmdscope/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/SouzaF19/cmdscope/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/SouzaF19/cmdscope/releases/tag/v0.1.1
 [0.1.0]: https://github.com/SouzaF19/cmdscope/releases/tag/v0.1.0

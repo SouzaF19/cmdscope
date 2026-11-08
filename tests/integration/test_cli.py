@@ -119,6 +119,35 @@ def test_run_sessions_show_and_reports(tmp_path: Path, monkeypatch, capsys) -> N
     assert exit_code == 0
 
 
+def test_no_native_events_forces_polling(tmp_path: Path, monkeypatch, capsys) -> None:
+    monkeypatch.chdir(tmp_path)
+    database = tmp_path / "sessions.db"
+    script = tmp_path / "demo.py"
+    script.write_text(SCRIPT, encoding="utf-8")
+
+    exit_code = main(
+        [
+            "--db",
+            str(database),
+            "--no-color",
+            "run",
+            "--no-native-events",
+            "--no-report",
+            "--",
+            sys.executable,
+            str(script),
+        ]
+    )
+    capsys.readouterr()
+    assert exit_code == 0
+
+    exit_code = main(["--db", str(database), "report", "1", "--format", "json"])
+    captured = capsys.readouterr()
+    report = json.loads(captured.out)
+    collectors = {item["name"]: item for item in report["collectors"]}
+    assert collectors["filesystem"]["details"]["backend"] == "polling"
+
+
 def test_run_returns_the_command_exit_code(tmp_path: Path, monkeypatch, capsys) -> None:
     monkeypatch.chdir(tmp_path)
     database = tmp_path / "sessions.db"

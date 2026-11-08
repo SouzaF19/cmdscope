@@ -139,6 +139,9 @@ cmdscope run --env API_TOKEN=secret -- node deploy.js
 # Skip collectors you do not need
 cmdscope run --no-network -- python build.py
 
+# Force polling on network filesystems (CIFS/NFS) where events are unreliable
+cmdscope run --no-native-events -- python build.py
+
 # Session history
 cmdscope sessions
 cmdscope sessions --json

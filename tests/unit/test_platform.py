@@ -4,8 +4,10 @@ from __future__ import annotations
 
 import os
 import subprocess
+from importlib.metadata import PackageNotFoundError, version
 from pathlib import Path
 
+from cmdscope import __version__
 from cmdscope.core.ignore import DEFAULT_IGNORE_PATTERNS, IgnoreRules
 from cmdscope.platforms import (
     config_dir,
@@ -89,7 +91,9 @@ def test_ignore_rules_support_explicit_exclusions(tmp_path: Path) -> None:
     assert not rules.matches(root / "other.db", root)
 
 
-def test_package_metadata_is_available() -> None:
-    from cmdscope import __version__
-
-    assert __version__
+def test_version_matches_distribution_metadata() -> None:
+    try:
+        installed = version("cmdscope")
+    except PackageNotFoundError:  # pragma: no cover - source checkout
+        return
+    assert __version__ == installed
