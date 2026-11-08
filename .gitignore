@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.venv-*/
+build/
+dist/
+.eggs/
+
+# Tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Local data and configuration
+cmdscope.toml
+*.db
+*.db-wal
+*.db-shm
+
+# Editors and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
