@@ -19,6 +19,7 @@ from cmdscope.analysis.summary import summarize
 from cmdscope.collectors.filesystem import FilesystemCollector
 from cmdscope.collectors.network import NetworkCollector
 from cmdscope.collectors.processes import ProcessCollector
+from cmdscope.collectors.registry import RegistryCollector
 from cmdscope.core.collector import Collector, CollectorContext
 from cmdscope.core.events import (
     CollectorState,
@@ -49,6 +50,7 @@ class RunOptions:
     enable_filesystem: bool = True
     enable_processes: bool = True
     enable_network: bool = True
+    enable_registry: bool = True
     filesystem_poll_interval: float = 1.0
     process_poll_interval: float = 0.5
     network_poll_interval: float = 0.25
@@ -222,6 +224,22 @@ def execute(
                     )
                 )
                 registry.add(root_pid, Path(options.command[0]).name)
+        if options.enable_registry:
+            registry_collector = RegistryCollector(
+                watch_roots=context.watch_roots,
+                poll_interval=options.filesystem_poll_interval,
+            )
+            try:
+                registry_collector.start(context)
+                active.append(registry_collector)
+            except Exception as exc:
+                statuses.append(
+                    CollectorStatus(
+                        name=registry_collector.name,
+                        state=CollectorState.FAILED,
+                        message=f"collector failed to start: {exc}",
+                    )
+                )
         else:
             registry.add(root_pid, Path(options.command[0]).name)
 

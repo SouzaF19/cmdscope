@@ -291,8 +291,8 @@ Run `cmdscope config --init` to write a commented template. Full reference:
 - [x] Session runner with filesystem, process, and network collectors
 - [x] Local SQLite history, session comparison, JSON/HTML reports
 - [x] Privacy-first sanitization and `cmdscope doctor`
-- [ ] Optional ETW/eBPF backends for deeper coverage (opt-in, clearly marked as elevated)
-- [ ] Registry and environment-diff collectors on Windows
+- [x] Optional ETW/eBPF backends for deeper coverage (opt-in, clearly marked as elevated)
+- [x] Registry and environment-diff collectors on Windows
 - [ ] Session diffing in HTML reports
 - [ ] Signed releases and reproducible-build verification
 

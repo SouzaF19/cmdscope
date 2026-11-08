@@ -1,1 +1,1 @@
-"""Collectors for filesystem, process, and network observation."""
+"""Collectors for filesystem, process, network, and registry observation."""

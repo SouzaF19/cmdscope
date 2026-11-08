@@ -1,12 +1,9 @@
 """Windows platform capabilities."""
 
 from __future__ import annotations
-
 import os
 from collections.abc import Mapping
-
 from cmdscope.platforms.base import PlatformInfo, config_dir, data_dir
-
 
 def info(environment: Mapping[str, str] | None = None) -> PlatformInfo:
     env = os.environ if environment is None else environment
@@ -24,5 +21,7 @@ def info(environment: Mapping[str, str] | None = None) -> PlatformInfo:
             "processes owned by other users.",
             "Environment mutations inside a running process cannot be observed externally.",
             "CmdScope is not a sandbox and does not restrict the monitored command.",
+            "ETW/eBPF backends are opt-in and require elevated privileges; enable with `cmdscope config --set backend=etw` or via the TOML configuration.",
+            "When ETW/eBPF is active, process and network observation has deeper coverage but CmdScope still does not restrict or isolate the monitored command.",
         ),
     )
