@@ -128,7 +128,7 @@ def is_elevated() -> bool:
         try:
             import ctypes
 
-            windll = ctypes.windll
+            windll = getattr(ctypes, "windll")
             return bool(windll.shell32.IsUserAnAdmin())
         except (AttributeError, OSError):
             return False
